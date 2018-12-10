@@ -89,12 +89,12 @@
 <meta property="og:site_name" content="木枫的博客">
 <meta property="og:description" content="规范背景与目的  MySQL数据库与oracle、sqlserver等数据库相比，有其内核上的优势与劣势。我们在使用MySQL数据库的时候需要遵循一定规范，扬长避短。本规范旨在帮助或指导RD、QA、OP等技术人员做出适合线上业务的数据库设计。在数据库变更和处理流程、数据库表设计、SQL编写等方面予以规范，从而为公司业务系统稳定、健康地运行提供保障。 设计规范数据库设计以下所有规范会按照【高危】、">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/2018/12/10/MySQL数据库设计规范/%5CUsers%5Cxc%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1544448078740.png">
-<meta property="og:updated_time" content="2018-12-10T13:29:52.243Z">
+<meta property="og:image" content="http://yoursite.com/2018/12/10/MySQL数据库设计规范/1.png">
+<meta property="og:updated_time" content="2018-12-10T13:33:05.258Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL数据库设计规范">
 <meta name="twitter:description" content="规范背景与目的  MySQL数据库与oracle、sqlserver等数据库相比，有其内核上的优势与劣势。我们在使用MySQL数据库的时候需要遵循一定规范，扬长避短。本规范旨在帮助或指导RD、QA、OP等技术人员做出适合线上业务的数据库设计。在数据库变更和处理流程、数据库表设计、SQL编写等方面予以规范，从而为公司业务系统稳定、健康地运行提供保障。 设计规范数据库设计以下所有规范会按照【高危】、">
-<meta name="twitter:image" content="http://yoursite.com/2018/12/10/MySQL数据库设计规范/%5CUsers%5Cxc%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1544448078740.png">
+<meta name="twitter:image" content="http://yoursite.com/2018/12/10/MySQL数据库设计规范/1.png">
 
 
 
@@ -472,7 +472,7 @@
 <p>更为高阶的方法，选用int来存储时间，使用SQL函数unix_timestamp()和from_unixtime()来进行转换。</p>
 </blockquote>
 <p>详细存储大小参加下图：</p>
-<p>​                                              <img src="/2018/12/10/MySQL数据库设计规范/%5CUsers%5Cxc%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1544448078740.png" alt="1544448078740">      </p>
+<p>​                                              <img src="/2018/12/10/MySQL数据库设计规范/1.png" alt="1">      </p>
 <h3 id="索引设计"><a href="#索引设计" class="headerlink" title="索引设计"></a>索引设计</h3><ol>
 <li><p>【强制】InnoDB表必须主键为id int/bigint auto_increment,且主键值禁止被更新。</p>
 </li>
