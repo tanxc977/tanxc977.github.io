@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-10T13:33:05.258Z</updated>
+  <updated>2018-12-11T13:42:26.667Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,58 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Jupyternotebook改变默认的的工作目录</title>
+    <link href="http://yoursite.com/2018/12/11/Jupyternotebook%E6%94%B9%E5%8F%98%E9%BB%98%E8%AE%A4%E7%9A%84%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95/"/>
+    <id>http://yoursite.com/2018/12/11/Jupyternotebook改变默认的的工作目录/</id>
+    <published>2018-12-11T13:31:38.000Z</published>
+    <updated>2018-12-11T13:42:26.667Z</updated>
+    
+    <content type="html"><![CDATA[<p>默认的“notebook工作文件夹”一般在 user/xx/ 下，如何修改你的“notebook工作文件夹”呢？</p><h6 id="1）在Anaconda-Prompt终端中输入下面命令，查看你的notebook配置文件在哪里："><a href="#1）在Anaconda-Prompt终端中输入下面命令，查看你的notebook配置文件在哪里：" class="headerlink" title="1）在Anaconda Prompt终端中输入下面命令，查看你的notebook配置文件在哪里："></a>1）在Anaconda Prompt终端中输入下面命令，查看你的notebook配置文件在哪里：</h6><blockquote><p><code>jupyter notebook --generate-config</code></p></blockquote><p>根据你运行实际显示的路径，打开这个配置文件（可以用notepad++软件打开各种格式的文件），我电脑上是这个文件<code>C:\Users\用户\.jupyter\jupyter_notebook_config.py</code></p><h6 id="2）notepad-打开jupyter-notebook-config-py，搜索关键词：c-NotebookApp-notebook-dir"><a href="#2）notepad-打开jupyter-notebook-config-py，搜索关键词：c-NotebookApp-notebook-dir" class="headerlink" title="2）notepad 打开jupyter_notebook_config.py，搜索关键词：c.NotebookApp.notebook_dir"></a>2）notepad 打开jupyter_notebook_config.py，搜索关键词：c.NotebookApp.notebook_dir</h6><p>将c.NotebookApp.notebook_dir前的注释打开，写成</p><blockquote><p><code>c.NotebookApp.notebook_dir=&#39;d:\workspace\ipython_workspace&#39;</code></p></blockquote><p><strong>‘d:\workspace\ipython_workspace’</strong> 为你想指定的目录 </p><h6 id="3）然后重启notebook服务器就可以了"><a href="#3）然后重启notebook服务器就可以了" class="headerlink" title="3）然后重启notebook服务器就可以了"></a>3）然后重启notebook服务器就可以了</h6><p>或者 打开jupyter notebook</p><p>输入： jupyter notebook 目录地址 </p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;默认的“notebook工作文件夹”一般在 user/xx/ 下，如何修改你的“notebook工作文件夹”呢？&lt;/p&gt;
+&lt;h6 id=&quot;1）在Anaconda-Prompt终端中输入下面命令，查看你的notebook配置文件在哪里：&quot;&gt;&lt;a href=&quot;#1）在Anaco
+      
+    
+    </summary>
+    
+      <category term="python" scheme="http://yoursite.com/categories/python/"/>
+    
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>win10下JupyterNotebook报错</title>
+    <link href="http://yoursite.com/2018/12/11/win10%E4%B8%8BJupyterNotebook%E6%8A%A5%E9%94%99/"/>
+    <id>http://yoursite.com/2018/12/11/win10下JupyterNotebook报错/</id>
+    <published>2018-12-11T13:25:26.000Z</published>
+    <updated>2018-12-11T13:30:40.966Z</updated>
+    
+    <content type="html"><![CDATA[<p>win10下安装Anaconda3 对应python版本为python3.7 ，安装好以后发现，通过UI界面运行Jupyter Notebook是可以的，但是通过命令行运行jupyter notebook 就一直报错，报错信息如下：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(C:\Users\xx\Anaconda3) C:\Users\xx&gt;jupyter notebook</span><br><span class="line">_cffi_ext.c</span><br><span class="line">AppData\Roaming\Python\Python37\site-packages\zmq\backend\cffi\__pycache__\_cffi_ext.c(209): fatal error C1083: Cannot open include file: 'sys/un.h': No such file or directory</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File "C:\Users\Myaxxmoto\Anaconda3\Scripts\jupyter-notebook-script.py", line 3, in &lt;module&gt;</span><br><span class="line">    import notebook.notebookapp</span><br><span class="line">  File "C:\Users\xx\Anaconda3\lib\site-packages\notebook\notebookapp.py", line 31, in &lt;module&gt;</span><br><span class="line">    from zmq.eventloop import ioloop</span><br><span class="line">  File "C:\Users\xx\AppData\Roaming\Python\Python37\site-packages\zmq\__init__.py", line 34, in &lt;module&gt;</span><br><span class="line">    from zmq import backend</span><br><span class="line">  File "C:\Users\xx\AppData\Roaming\Python\Python37\site-packages\zmq\backend\__init__.py", line 40, in &lt;module&gt;</span><br><span class="line">    reraise(*exc_info)</span><br><span class="line">  File "C:\Users\xx\AppData\Roaming\Python\Python37\site-packages\zmq\utils\sixcerpt.py", line 34, in reraise</span><br><span class="line">    raise value</span><br><span class="line">  File "C:\Users\xx\AppData\Roaming\Python\Python37\site-packages\zmq\backend\__init__.py", line 27, in &lt;module&gt;</span><br><span class="line">    _ns = select_backend(first)</span><br><span class="line">  File "C:\Users\xx\AppData\Roaming\Python\Python37\site-packages\zmq\backend\select.py", line 26, in select_backend</span><br><span class="line">    mod = __import__(name, fromlist=public_api)</span><br><span class="line">  File "C:\Users\xx\AppData\Roaming\Python\Python37\site-packages\zmq\backend\cython\__init__.py", line 6, in &lt;module&gt;</span><br><span class="line">    from . import (constants, error, message, context,</span><br><span class="line">ImportError: cannot import name 'constants'</span><br></pre></td></tr></table></figure><p>困扰了几天，最后查到可以用如下方式处理：</p><p><code>pip uninstall pyzmq</code></p><p>然后：</p><p><code>pip install pyzmq</code></p><p>即可解决问题。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;win10下安装Anaconda3 对应python版本为python3.7 ，安装好以后发现，通过UI界面运行Jupyter Notebook是可以的，但是通过命令行运行jupyter notebook 就一直报错，报错信息如下：&lt;/p&gt;
+&lt;figure class=&quot;h
+      
+    
+    </summary>
+    
+      <category term="python" scheme="http://yoursite.com/categories/python/"/>
+    
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL数据库设计规范</title>
