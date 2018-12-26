@@ -335,24 +335,15 @@
       
         
           
-            <ol>
-<li><strong>安装</strong></li>
-</ol>
-<p>首先，需要输入以下内容来安装redis-server：<br> <code>sudo apt-get install redis-server</code><br> 接下来，要编辑/etc/redis/redis.conf并将以下行<br> <code>bind 127.0.0.1</code><br> 更改为<br> <code>bind 0.0.0.0</code><br> 最后，键入以下命令重新启动服务：<br> <code>sudo service redis-server restart</code></p>
-<ol>
-<li><strong>测试</strong></li>
-</ol>
-<p>接下来，可以通过输入以下内容来测试你的Redis服务器实例：</p>
+            <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>首先，需要输入以下内容来安装redis-server：<br> <code>sudo apt-get install redis-server</code><br> 接下来，要编辑/etc/redis/redis.conf并将以下行<br> <code>bind 127.0.0.1</code><br> 更改为<br> <code>bind 0.0.0.0</code><br> 最后，键入以下命令重新启动服务：<br> <code>sudo service redis-server restart</code></p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>接下来，可以通过输入以下内容来测试你的Redis服务器实例：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> xc @ LAPTOP-3CVGIE0Q <span class="keyword">in</span> / [21:01:30]</span></span><br><span class="line"><span class="meta">$</span><span class="bash">redis-cli</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
-<ol>
-<li><strong>redis服务自启动问题</strong></li>
-</ol>
-<p>关闭Ubuntu窗口后下次再打开，redis-cli连不上redis服务器：</p>
+<h4 id="redis服务自启动问题"><a href="#redis服务自启动问题" class="headerlink" title="redis服务自启动问题"></a>redis服务自启动问题</h4><p>关闭Ubuntu窗口后下次再打开，redis-cli连不上redis服务器：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ redis-cli</span><br><span class="line">Could not connect to Redis at 127.0.0.1:6379: Connection refused</span><br><span class="line">not connected&gt;</span><br></pre></td></tr></table></figure>
 <p>解决方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ sudo service redis-server start</span><br><span class="line">[sudo] password for yan:</span><br><span class="line">Starting redis-server: redis-server.</span><br><span class="line">yan@yan:~$</span><br></pre></td></tr></table></figure>
 <p>再次测试：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ redis-cli</span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line">127.0.0.1:6379&gt; set hello world</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get hello</span><br><span class="line">"world"</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ redis-cli</span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line">127.0.0.1:6379&gt; set hello xc </span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get hello</span><br><span class="line">"xc"</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
 
           
         
