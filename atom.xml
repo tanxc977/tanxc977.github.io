@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-25T13:56:13.099Z</updated>
+  <updated>2018-12-26T13:04:54.338Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Windows10子系统Ubuntu上的Bash上配置Redis服务器</title>
+    <link href="http://yoursite.com/2018/12/26/Windows10%E5%AD%90%E7%B3%BB%E7%BB%9FUbuntu%E4%B8%8A%E7%9A%84Bash%E4%B8%8A%E9%85%8D%E7%BD%AERedis%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    <id>http://yoursite.com/2018/12/26/Windows10子系统Ubuntu上的Bash上配置Redis服务器/</id>
+    <published>2018-12-26T12:59:28.000Z</published>
+    <updated>2018-12-26T13:04:54.338Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li><strong>安装</strong></li></ol><p>首先，需要输入以下内容来安装redis-server：<br> <code>sudo apt-get install redis-server</code><br> 接下来，要编辑/etc/redis/redis.conf并将以下行<br> <code>bind 127.0.0.1</code><br> 更改为<br> <code>bind 0.0.0.0</code><br> 最后，键入以下命令重新启动服务：<br> <code>sudo service redis-server restart</code></p><ol><li><strong>测试</strong></li></ol><p>接下来，可以通过输入以下内容来测试你的Redis服务器实例：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> xc @ LAPTOP-3CVGIE0Q <span class="keyword">in</span> / [21:01:30]</span></span><br><span class="line"><span class="meta">$</span><span class="bash">redis-cli</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure><ol><li><strong>redis服务自启动问题</strong></li></ol><p>关闭Ubuntu窗口后下次再打开，redis-cli连不上redis服务器：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ redis-cli</span><br><span class="line">Could not connect to Redis at 127.0.0.1:6379: Connection refused</span><br><span class="line">not connected&gt;</span><br></pre></td></tr></table></figure><p>解决方法：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ sudo service redis-server start</span><br><span class="line">[sudo] password for yan:</span><br><span class="line">Starting redis-server: redis-server.</span><br><span class="line">yan@yan:~$</span><br></pre></td></tr></table></figure><p>再次测试：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ redis-cli</span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line">127.0.0.1:6379&gt; set hello world</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get hello</span><br><span class="line">"world"</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;安装&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;首先，需要输入以下内容来安装redis-server：&lt;br&gt; &lt;code&gt;sudo apt-get install redis-server&lt;/code&gt;&lt;br&gt; 接下来，要编辑/etc/re
+      
+    
+    </summary>
+    
+    
+      <category term="redis" scheme="http://yoursite.com/tags/redis/"/>
+    
+  </entry>
   
   <entry>
     <title>mysql8.0zip安装过程</title>
