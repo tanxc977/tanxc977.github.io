@@ -264,6 +264,223 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/13/RequestParam-RequestBody-PathVariable-等参数绑定注解详解/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mufeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="木枫的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/13/RequestParam-RequestBody-PathVariable-等参数绑定注解详解/" itemprop="url">@RequestParam @RequestBody @PathVariable 等参数绑定注解详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-13T21:22:58+08:00">
+                2019-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>引用自CSDN<a href="https://blog.csdn.net/walkerJong/article/details/7946109" target="_blank" rel="noopener">原文</a>,备查</p>
+<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>handler method 参数绑定常用的注解,我们根据他们处理的Request的不同内容部分分为四类：（主要讲解常用类型）</p>
+<blockquote>
+<p>A、处理requet uri 部分（这里指uri template中variable，不含queryString部分）的注解：   @PathVariable;</p>
+<p>B、处理request header部分的注解：   @RequestHeader, @CookieValue;</p>
+<p>C、处理request body部分的注解：@RequestParam,  @RequestBody;</p>
+<p>D、处理attribute类型是注解： @SessionAttributes, @ModelAttribute;</p>
+</blockquote>
+<h2 id="PathVariable"><a href="#PathVariable" class="headerlink" title="@PathVariable"></a>@PathVariable</h2><p>当使用<code>@RequestMapping URI template</code>样式映射时， 即 <code>someUrl/{paramId}</code>, 这时的paramId可通过 @Pathvariable注解绑定它传过来的值到方法的参数上。</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/owners/&#123;ownerId&#125;"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RelativePathUriTemplateController</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"/pets/&#123;petId&#125;"</span>)</span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findPet</span><span class="params">(@PathVariable String ownerId, @PathVariable String petId, Model model)</span> </span>&#123;    </span><br><span class="line">    <span class="comment">// implementation omitted</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码把URI template 中变量 ownerId的值和petId的值，绑定到方法的参数上。若方法参数名称和需要绑定的uri template中变量名称不一致，需要在<code>@PathVariable(&quot;name&quot;)</code>指定uri template中的名称。</p>
+<h2 id="RequestHeader、-CookieValue"><a href="#RequestHeader、-CookieValue" class="headerlink" title="@RequestHeader、@CookieValue"></a>@RequestHeader、@CookieValue</h2><p><code>@RequestHeader</code>注解，可以把Request请求header部分的值绑定到方法的参数上。</p>
+<p>示例代码：</p>
+<p>这是一个Request 的header部分：</p>
+<blockquote>
+<p>Host                            localhost:8080<br>Accept                           text/html,application/xhtml+xml,application/xml;q=0.9<br>Accept-Language            fr,en-gb;q=0.7,en;q=0.3<br>Accept-Encoding             gzip,deflate<br>Accept-Charset               ISO-8859-1,utf-8;q=0.7,*;q=0.7<br>Keep-Alive                   300</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/displayHeaderInfo.do"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">displayHeaderInfo</span><span class="params">(@RequestHeader(<span class="string">"Accept-Encoding"</span>)</span> String encoding,</span></span><br><span class="line"><span class="function">                              @<span class="title">RequestHeader</span><span class="params">(<span class="string">"Keep-Alive"</span>)</span> <span class="keyword">long</span> keepAlive)  </span>&#123;</span><br><span class="line">                              <span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    上面的代码，把request header部分的 Accept-Encoding的值，绑定到参数encoding上了， Keep-Alive header的值绑定到参数keepAlive上。</p>
+<p>@CookieValue 可以把Request header中关于cookie的值绑定到方法的参数上。</p>
+<p>例如有如下Cookie值：</p>
+<p>JSESSIONID=415A4AC178C59DACE0B2C9CA727CDD84<br>参数绑定的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/displayHeaderInfo.do"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">displayHeaderInfo</span><span class="params">(@CookieValue(<span class="string">"JSESSIONID"</span>)</span> String cookie)  </span>&#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>即把JSESSIONID的值绑定到参数cookie上。</p>
+<h2 id="RequestParam-RequestBody"><a href="#RequestParam-RequestBody" class="headerlink" title="@RequestParam, @RequestBody"></a>@RequestParam, @RequestBody</h2><h3 id="RequestParam"><a href="#RequestParam" class="headerlink" title="@RequestParam"></a>@RequestParam</h3><ul>
+<li><p>A） 常用来处理简单类型的绑定，通过Request.getParameter() 获取的String可直接转换为简单类型的情况（ String–&gt; 简单类型的转换操作由ConversionService配置的转换器来完成）；因为使用request.getParameter()方式获取参数，所以可以处理get 方式中queryString的值，也可以处理post方式中 body data的值；</p>
+</li>
+<li><p>B）用来处理Content-Type: 为 <code>application/x-www-form-urlencoded</code>编码的内容，提交方式GET、POST；</p>
+</li>
+<li><p>C) 该注解有两个属性： value、required； value用来指定要传入值的id名称，required用来指示参数是否必须绑定；</p>
+</li>
+</ul>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/pets"</span>)</span><br><span class="line"><span class="meta">@SessionAttributes</span>(<span class="string">"pet"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EditPetForm</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">@RequestMapping</span>(method = RequestMethod.GET)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">setupForm</span><span class="params">(@RequestParam(<span class="string">"petId"</span>)</span> <span class="keyword">int</span> petId, ModelMap model) </span>&#123;</span><br><span class="line">    Pet pet = <span class="keyword">this</span>.clinic.loadPet(petId);</span><br><span class="line">    model.addAttribute(<span class="string">"pet"</span>, pet);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"petForm"</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<h3 id="RequestBody"><a href="#RequestBody" class="headerlink" title="@RequestBody"></a>@RequestBody</h3><p>该注解常用来处理Content-Type: 不是<code>application/x-www-form-urlencoded</code>编码的内容，例如<code>application/json, application/xml</code>等；</p>
+<p>它是通过使用HandlerAdapter 配置的HttpMessageConverters来解析post data body，然后绑定到相应的bean上的。</p>
+<p>因为配置有FormHttpMessageConverter，所以也可以用来处理 application/x-www-form-urlencoded的内容，处理完的结果放在一个MultiValueMap&lt;String, String&gt;里，这种情况在某些特殊需求下使用，详情查看FormHttpMessageConverter api;</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/something"</span>, method = RequestMethod.PUT)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(@RequestBody String body, Writer writer)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">  writer.write(body);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="SessionAttributes-ModelAttribute"><a href="#SessionAttributes-ModelAttribute" class="headerlink" title="@SessionAttributes, @ModelAttribute"></a>@SessionAttributes, @ModelAttribute</h2><h3 id="SessionAttributes"><a href="#SessionAttributes" class="headerlink" title="@SessionAttributes:"></a>@SessionAttributes:</h3><p>该注解用来绑定HttpSession中的attribute对象的值，便于在方法中的参数里使用。</p>
+<p>该注解有value、types两个属性，可以通过名字和类型指定要使用的attribute 对象；</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/editPet.do"</span>)</span><br><span class="line"><span class="meta">@SessionAttributes</span>(<span class="string">"pet"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EditPetForm</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ModelAttribute"><a href="#ModelAttribute" class="headerlink" title="@ModelAttribute"></a>@ModelAttribute</h3><p>该注解有两个用法，一个是用于<strong>方法</strong>上，一个是用于<strong>参数</strong>上；</p>
+<p>用于方法上时：  通常用来在处理@RequestMapping之前，为请求绑定需要从后台查询的model；</p>
+<p>用于参数上时： 用来通过名称对应，把相应名称的值绑定到注解的参数bean上；要绑定的值来源于：</p>
+<ul>
+<li><p>A） @SessionAttributes 启用的attribute 对象上；</p>
+</li>
+<li><p>B） @ModelAttribute 用于方法上时指定的model对象；</p>
+</li>
+<li><p>C） 上述两种情况都没有时，new一个需要绑定的bean对象，然后把request中按名称对应的方式把值绑定到bean中。</p>
+</li>
+</ul>
+<p>用到方法上@ModelAttribute的示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The return value of the method is added to the model under the name "account"</span></span><br><span class="line"><span class="comment">// You can customize the name via @ModelAttribute("myAccount")</span></span><br><span class="line"><span class="meta">@ModelAttribute</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Account <span class="title">addAccount</span><span class="params">(@RequestParam String number)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> accountManager.findAccount(number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方式实际的效果就是在调用@RequestMapping的方法之前，为request对象的model里put（“account”， Account）；</p>
+<p>用在参数上的@ModelAttribute示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value=<span class="string">"/owners/&#123;ownerId&#125;/pets/&#123;petId&#125;/edit"</span>, method = RequestMethod.POST)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">processSubmit</span><span class="params">(@ModelAttribute Pet pet)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>首先查询 @SessionAttributes有无绑定的Pet对象，若没有则查询@ModelAttribute方法层面上是否绑定了Pet对象，若没有则将URI template中的值按对应的名称绑定到Pet对象的各属性上。</p>
+<p>补充讲解：<br>问题： 在不给定注解的情况下，参数是怎样绑定的？<br>通过分析AnnotationMethodHandlerAdapter和RequestMappingHandlerAdapter的源代码发现，方法的参数在不给定参数的情况下：</p>
+<p>若要绑定的对象时简单类型：  调用@RequestParam来处理的。  </p>
+<p>若要绑定的对象时复杂类型：  调用@ModelAttribute来处理的。</p>
+<p>这里的简单类型指java的原始类型(boolean, int 等)、原始类型对象（Boolean, Int等）、String、Date等ConversionService里可以直接String转换成目标对象的类型；</p>
+<p>下面贴出AnnotationMethodHandlerAdapter中绑定参数的部分源代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Object[] resolveHandlerArguments(Method handlerMethod, Object handler,</span><br><span class="line">			NativeWebRequest webRequest, ExtendedModelMap implicitModel) <span class="keyword">throws</span> Exception &#123;		</span><br><span class="line">	Class[] paramTypes = handlerMethod.getParameterTypes();</span><br><span class="line">	Object[] args = <span class="keyword">new</span> Object[paramTypes.length];</span><br><span class="line"> </span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; args.length; i++) &#123;</span><br><span class="line">		MethodParameter methodParam = <span class="keyword">new</span> MethodParameter(handlerMethod, i);</span><br><span class="line">		methodParam.initParameterNameDiscovery(<span class="keyword">this</span>.parameterNameDiscoverer);</span><br><span class="line">		GenericTypeResolver.resolveParameterType(methodParam, handler.getClass());</span><br><span class="line">		String paramName = <span class="keyword">null</span>;</span><br><span class="line">		String headerName = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">boolean</span> requestBodyFound = <span class="keyword">false</span>;</span><br><span class="line">		String cookieName = <span class="keyword">null</span>;</span><br><span class="line">		String pathVarName = <span class="keyword">null</span>;</span><br><span class="line">		String attrName = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">boolean</span> required = <span class="keyword">false</span>;</span><br><span class="line">		String defaultValue = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">boolean</span> validate = <span class="keyword">false</span>;</span><br><span class="line">		Object[] validationHints = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">int</span> annotationsFound = <span class="number">0</span>;</span><br><span class="line">		Annotation[] paramAnns = methodParam.getParameterAnnotations();</span><br><span class="line"> </span><br><span class="line">		<span class="keyword">for</span> (Annotation paramAnn : paramAnns) &#123;</span><br><span class="line">			<span class="keyword">if</span> (RequestParam.class.isInstance(paramAnn)) &#123;</span><br><span class="line">				RequestParam requestParam = (RequestParam) paramAnn;</span><br><span class="line">				paramName = requestParam.value();</span><br><span class="line">				required = requestParam.required();</span><br><span class="line">				defaultValue = parseDefaultValueAttribute(requestParam.defaultValue());</span><br><span class="line">				annotationsFound++;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (RequestHeader.class.isInstance(paramAnn)) &#123;</span><br><span class="line">				RequestHeader requestHeader = (RequestHeader) paramAnn;</span><br><span class="line">				headerName = requestHeader.value();</span><br><span class="line">				required = requestHeader.required();</span><br><span class="line">				defaultValue = parseDefaultValueAttribute(requestHeader.defaultValue());</span><br><span class="line">				annotationsFound++;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (RequestBody.class.isInstance(paramAnn)) &#123;</span><br><span class="line">				requestBodyFound = <span class="keyword">true</span>;</span><br><span class="line">				annotationsFound++;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (CookieValue.class.isInstance(paramAnn)) &#123;</span><br><span class="line">				CookieValue cookieValue = (CookieValue) paramAnn;</span><br><span class="line">				cookieName = cookieValue.value();</span><br><span class="line">				required = cookieValue.required();</span><br><span class="line">				defaultValue = parseDefaultValueAttribute(cookieValue.defaultValue());</span><br><span class="line">				annotationsFound++;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (PathVariable.class.isInstance(paramAnn)) &#123;</span><br><span class="line">				PathVariable pathVar = (PathVariable) paramAnn;</span><br><span class="line">				pathVarName = pathVar.value();</span><br><span class="line">				annotationsFound++;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (ModelAttribute.class.isInstance(paramAnn)) &#123;</span><br><span class="line">				ModelAttribute attr = (ModelAttribute) paramAnn;</span><br><span class="line">				attrName = attr.value();</span><br><span class="line">				annotationsFound++;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (Value.class.isInstance(paramAnn)) &#123;</span><br><span class="line">				defaultValue = ((Value) paramAnn).value();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (paramAnn.annotationType().getSimpleName().startsWith(<span class="string">"Valid"</span>)) &#123;</span><br><span class="line">				validate = <span class="keyword">true</span>;</span><br><span class="line">				Object value = AnnotationUtils.getValue(paramAnn);</span><br><span class="line">				validationHints = (value <span class="keyword">instanceof</span> Object[] ? (Object[]) value : <span class="keyword">new</span> Object[] &#123;value&#125;);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"> </span><br><span class="line">		<span class="keyword">if</span> (annotationsFound &gt; <span class="number">1</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Handler parameter annotations are exclusive choices - "</span> +</span><br><span class="line">					<span class="string">"do not specify more than one such annotation on the same parameter: "</span> + handlerMethod);</span><br><span class="line">		&#125;</span><br><span class="line"> </span><br><span class="line">		<span class="keyword">if</span> (annotationsFound == <span class="number">0</span>) &#123;<span class="comment">// 若没有发现注解</span></span><br><span class="line">			Object argValue = resolveCommonArgument(methodParam, webRequest);    <span class="comment">//判断WebRquest是否可赋值给参数</span></span><br><span class="line">			<span class="keyword">if</span> (argValue != WebArgumentResolver.UNRESOLVED) &#123;</span><br><span class="line">				args[i] = argValue;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (defaultValue != <span class="keyword">null</span>) &#123;</span><br><span class="line">				args[i] = resolveDefaultValue(defaultValue);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				Class&lt;?&gt; paramType = methodParam.getParameterType();</span><br><span class="line">				<span class="keyword">if</span> (Model.class.isAssignableFrom(paramType) || Map.class.isAssignableFrom(paramType)) &#123;</span><br><span class="line">					<span class="keyword">if</span> (!paramType.isAssignableFrom(implicitModel.getClass())) &#123;</span><br><span class="line">						<span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Argument ["</span> + paramType.getSimpleName() + <span class="string">"] is of type "</span> +</span><br><span class="line">								<span class="string">"Model or Map but is not assignable from the actual model. You may need to switch "</span> +</span><br><span class="line">								<span class="string">"newer MVC infrastructure classes to use this argument."</span>);</span><br><span class="line">					&#125;</span><br><span class="line">					args[i] = implicitModel;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">if</span> (SessionStatus.class.isAssignableFrom(paramType)) &#123;</span><br><span class="line">					args[i] = <span class="keyword">this</span>.sessionStatus;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">if</span> (HttpEntity.class.isAssignableFrom(paramType)) &#123;</span><br><span class="line">					args[i] = resolveHttpEntityRequest(methodParam, webRequest);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">if</span> (Errors.class.isAssignableFrom(paramType)) &#123;</span><br><span class="line">					<span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Errors/BindingResult argument declared "</span> +</span><br><span class="line">							<span class="string">"without preceding model attribute. Check your handler method signature!"</span>);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">if</span> (BeanUtils.isSimpleProperty(paramType)) &#123;<span class="comment">// 判断是否参数类型是否是简单类型，若是在使用@RequestParam方式来处理,否则使用@ModelAttribute方式处理</span></span><br><span class="line">					paramName = <span class="string">""</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> &#123;</span><br><span class="line">					attrName = <span class="string">""</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"> </span><br><span class="line">		<span class="keyword">if</span> (paramName != <span class="keyword">null</span>) &#123;</span><br><span class="line">			args[i] = resolveRequestParam(paramName, required, defaultValue, methodParam, webRequest, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (headerName != <span class="keyword">null</span>) &#123;</span><br><span class="line">			args[i] = resolveRequestHeader(headerName, required, defaultValue, methodParam, webRequest, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (requestBodyFound) &#123;</span><br><span class="line">			args[i] = resolveRequestBody(methodParam, webRequest, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (cookieName != <span class="keyword">null</span>) &#123;</span><br><span class="line">			args[i] = resolveCookieValue(cookieName, required, defaultValue, methodParam, webRequest, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (pathVarName != <span class="keyword">null</span>) &#123;</span><br><span class="line">			args[i] = resolvePathVariable(pathVarName, methodParam, webRequest, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attrName != <span class="keyword">null</span>) &#123;</span><br><span class="line">			WebDataBinder binder =</span><br><span class="line">					resolveModelAttribute(attrName, methodParam, implicitModel, webRequest, handler);</span><br><span class="line">			<span class="keyword">boolean</span> assignBindingResult = (args.length &gt; i + <span class="number">1</span> &amp;&amp; Errors.class.isAssignableFrom(paramTypes[i + <span class="number">1</span>]));</span><br><span class="line">			<span class="keyword">if</span> (binder.getTarget() != <span class="keyword">null</span>) &#123;</span><br><span class="line">				doBind(binder, webRequest, validate, validationHints, !assignBindingResult);</span><br><span class="line">			&#125;</span><br><span class="line">			args[i] = binder.getTarget();</span><br><span class="line">			<span class="keyword">if</span> (assignBindingResult) &#123;</span><br><span class="line">				args[i + <span class="number">1</span>] = binder.getBindingResult();</span><br><span class="line">				i++;</span><br><span class="line">			&#125;</span><br><span class="line">			implicitModel.putAll(binder.getBindingResult().getModel());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="keyword">return</span> args;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>RequestMappingHandlerAdapter中使用的参数绑定，代码稍微有些不同，有兴趣的同仁可以分析下，最后处理的结果都是一样的。</p>
+<p>示例：</p>
+<p>​        </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span> (&#123;<span class="string">"/"</span>, <span class="string">"/home"</span>&#125;)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">showHomePage</span><span class="params">(String key)</span></span>&#123;	</span><br><span class="line">	logger.debug(<span class="string">"key="</span>+key);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"home"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种情况下，就调用默认的@RequestParam来处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span> (method = RequestMethod.POST)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">doRegister</span><span class="params">(User user)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(logger.isDebugEnabled())&#123;</span><br><span class="line">		logger.debug(<span class="string">"process url[/user], method[post] in "</span>+getClass());</span><br><span class="line">		logger.debug(user);</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="keyword">return</span> <span class="string">"user"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这种情况下，就调用@ModelAttribute来处理。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/10/SpringBoot项目部署到外部Tomcat中的方法/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2174,164 +2391,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/07/Node-js安装及环境配置之Windows篇/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mufeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="木枫的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/07/Node-js安装及环境配置之Windows篇/" itemprop="url">Node.js安装及环境配置之Windows篇</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-07T22:28:16+08:00">
-                2018-12-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/前端框架/" itemprop="url" rel="index">
-                    <span itemprop="name">前端框架</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h6 id="一、安装环境"><a href="#一、安装环境" class="headerlink" title="一、安装环境"></a>一、安装环境</h6><p>1、本机系统：Windows 10 home（64位）<br>2、Node.js：v10.14.1 LTS（64位）</p>
-<h6 id="二、安装Node-js步骤"><a href="#二、安装Node-js步骤" class="headerlink" title="二、安装Node.js步骤"></a>二、安装Node.js步骤</h6><p>1、下载对应你系统的Node.js版本:<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">https://nodejs.org/en/download/</a><br>2、选安装目录进行安装<br>3、环境配置<br>4、测试</p>
-<h6 id="三、前期准备"><a href="#三、前期准备" class="headerlink" title="三、前期准备"></a>三、前期准备</h6><p>1、Node.js简介<br>简单的说 Node.js 就是运行在服务端的 JavaScript。Node.js 是一个基于 <a href="https://developers.google.com/v8/" target="_blank" rel="noopener">Chrome V8</a> 引擎的 JavaScript 运行环境。Node.js 使用了一个事件驱动、非阻塞式 I/O 的模型，使其轻量又高效。Node.js 的包管理器 <a href="https://www.npmjs.com/" target="_blank" rel="noopener">npm</a>，是全球最大的开源库生态系统。<br>2、下载Node.js<br>打开官网下载链接:<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">https://nodejs.org/en/download/</a> 我这里下载的是node-v10.14.1-x64.msi</p>
-<h6 id="四、开始安装"><a href="#四、开始安装" class="headerlink" title="四、开始安装"></a>四、开始安装</h6><p>1、下载完成后，双击“node-v10.14.1-x64.msi”，开始安装Node.js</p>
-<p>至此Node.js已经安装完成，可以先进行下简单的测试安装是否成功了，后面还要进行环境配置<br>在键盘按下【win+R】键，输入cmd，然后回车，打开cmd窗口</p>
-<blockquote>
-<p>node -v</p>
-<p>npm -v</p>
-</blockquote>
-<p>此处说明下：新版的Node.js已自带npm，安装Node.js时会一起安装，npm的作用就是对Node.js依赖的包进行管理，也可以理解为用来安装/卸载Node.js需要装的东西</p>
-<h6 id="五、环境配置"><a href="#五、环境配置" class="headerlink" title="五、环境配置"></a>五、环境配置</h6><p>说明：这里的环境配置主要配置的是npm安装的全局模块所在的路径，以及缓存cache的路径，之所以要配置，是因为以后在执行类似：npm install express [-g] （后面的可选参数-g，g代表global全局安装的意思）的安装语句时，会将安装的模块安装到【C:\Users\用户名\AppData\Roaming\npm】路径中，占C盘空间。<br>例如：我希望将全模块所在路径和缓存路径放在我node.js安装的文件夹中，则在我安装的文件夹【D:\Dprog\nodejs】下创建两个文件夹【node_global】及【node_cache】</p>
-<p>创建完两个空文件夹之后，打开cmd命令窗口，输入</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config set prefix "D:\Develop\nodejs\node_global"</span><br><span class="line">npm config set cache "D:\Develop\nodejs\node_cache"</span><br></pre></td></tr></table></figure>
-<p>接下来设置环境变量，关闭cmd窗口，“我的电脑”-右键-“属性”-“高级系统设置”-“高级”-“环境变量”</p>
-<p>进入环境变量对话框，在【系统变量】下新建【NODE_PATH】，输入【D:\dprog\nodejs\node_global\node_modules】，将【用户变量】下的【Path】修改为【D:\dprog\nodejs\node_global】</p>
-<h6 id="六、测试"><a href="#六、测试" class="headerlink" title="六、测试"></a>六、测试</h6><p>配置完后，安装个module测试下，我们就安装最常用的express模块，打开cmd窗口，<br>输入如下命令进行模块的全局安装：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install express -g     # -g是全局安装的意思</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2382,7 +2441,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
