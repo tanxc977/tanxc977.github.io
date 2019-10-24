@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-01-13T14:01:19.782Z</updated>
+  <updated>2019-10-24T04:01:44.503Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>win10家庭版安装docker</title>
+    <link href="http://yoursite.com/2019/10/24/win10%E5%AE%B6%E5%BA%AD%E7%89%88%E5%AE%89%E8%A3%85docker/"/>
+    <id>http://yoursite.com/2019/10/24/win10家庭版安装docker/</id>
+    <published>2019-10-24T03:59:00.000Z</published>
+    <updated>2019-10-24T04:01:44.503Z</updated>
+    
+    <content type="html"><![CDATA[<p><em>现在大部分笔记本预装的都是win10家庭版，而家庭版又不支持Hyper-V，Docker Desktop是无法直接安装的。但其实家庭版是可以通过脚本开启Hyper-V来安装Docker Desktop的。</em></p><h3 id="开启Hyper-V"><a href="#开启Hyper-V" class="headerlink" title="开启Hyper-V"></a>开启Hyper-V</h3><p>添加方法非常简单，把以下内容保存为.cmd文件，然后以管理员身份打开这个文件。提示重启时保存好文件重启吧，重启完成就能使用功能完整的Hyper-V了。</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">pushd</span> "%~dp0"</span><br><span class="line"></span><br><span class="line"><span class="built_in">dir</span> /b <span class="variable">%SystemRoot%</span>\servicing\Packages\*Hyper-V*.mum &gt;hyper-v.txt</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> /f <span class="variable">%%i</span> <span class="keyword">in</span> ('<span class="built_in">findstr</span> /i . hyper-v.txt <span class="number">2</span>^&gt;<span class="built_in">nul</span>') <span class="keyword">do</span> dism /online /norestart /add-package:"<span class="variable">%SystemRoot%</span>\servicing\Packages\<span class="variable">%%i</span>"</span><br><span class="line"></span><br><span class="line"><span class="built_in">del</span> hyper-v.txt</span><br><span class="line"></span><br><span class="line">Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /ALL</span><br></pre></td></tr></table></figure><h3 id="伪装成专业版绕过安装检测"><a href="#伪装成专业版绕过安装检测" class="headerlink" title="伪装成专业版绕过安装检测"></a>伪装成专业版绕过安装检测</h3><p>如图，由于Docker Desktop会在安装的时候检测系统版本，直接安装会显示安装失败。所以需要改下注册表绕过安装检测。</p><p>用管理员权限运行如下cmd命令</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REG ADD "HKEY_LOCAL_MACHINE\software\Microsoft\Windows NT\CurrentVersion" /v EditionId /T REG_EXPAND_SZ /d Professional /F</span><br></pre></td></tr></table></figure><p>注意: 1、修改前先备份注册表。2、重启后此项注册表值会自动还原，但不影响docker运行。</p><h3 id="其他事项"><a href="#其他事项" class="headerlink" title="其他事项"></a>其他事项</h3><p>在<a href="https://store.docker.com/editions/community/docker-ce-desktop-windows" target="_blank" rel="noopener">官网下载</a>Docker Desktop Installer.exe后直接安装，安装时取消勾选window容器，默认没有勾选。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;em&gt;现在大部分笔记本预装的都是win10家庭版，而家庭版又不支持Hyper-V，Docker Desktop是无法直接安装的。但其实家庭版是可以通过脚本开启Hyper-V来安装Docker Desktop的。&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&quot;开启Hyper-V&quot;&gt;&lt;a
+      
+    
+    </summary>
+    
+      <category term="docker" scheme="http://yoursite.com/categories/docker/"/>
+    
+    
+      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
+    
+  </entry>
   
   <entry>
     <title>@RequestParam @RequestBody @PathVariable 等参数绑定注解详解</title>
@@ -75,7 +101,7 @@
     <published>2018-12-26T12:59:28.000Z</published>
     <updated>2018-12-26T13:10:25.643Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>首先，需要输入以下内容来安装redis-server：<br> <code>sudo apt-get install redis-server</code><br> 接下来，要编辑/etc/redis/redis.conf并将以下行<br> <code>bind 127.0.0.1</code><br> 更改为<br> <code>bind 0.0.0.0</code><br> 最后，键入以下命令重新启动服务：<br> <code>sudo service redis-server restart</code></p><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>接下来，可以通过输入以下内容来测试你的Redis服务器实例：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> xc @ LAPTOP-3CVGIE0Q <span class="keyword">in</span> / [21:01:30]</span></span><br><span class="line"><span class="meta">$</span><span class="bash">redis-cli</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure><h4 id="redis服务自启动问题"><a href="#redis服务自启动问题" class="headerlink" title="redis服务自启动问题"></a>redis服务自启动问题</h4><p>关闭Ubuntu窗口后下次再打开，redis-cli连不上redis服务器：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ redis-cli</span><br><span class="line">Could not connect to Redis at 127.0.0.1:6379: Connection refused</span><br><span class="line">not connected&gt;</span><br></pre></td></tr></table></figure><p>解决方法：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ sudo service redis-server start</span><br><span class="line">[sudo] password for yan:</span><br><span class="line">Starting redis-server: redis-server.</span><br><span class="line">yan@yan:~$</span><br></pre></td></tr></table></figure><p>再次测试：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ redis-cli</span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line">127.0.0.1:6379&gt; set hello xc </span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get hello</span><br><span class="line">"xc"</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>首先，需要输入以下内容来安装redis-server：<br> <code>sudo apt-get install redis-server</code><br> 接下来，要编辑/etc/redis/redis.conf并将以下行<br> <code>bind 127.0.0.1</code><br> 更改为<br> <code>bind 0.0.0.0</code><br> 最后，键入以下命令重新启动服务：<br> <code>sudo service redis-server restart</code></p><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>接下来，可以通过输入以下内容来测试你的Redis服务器实例：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> xc @ LAPTOP-3CVGIE0Q in / [21:01:30]</span><br><span class="line"><span class="meta">$</span>redis-cli</span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure><h4 id="redis服务自启动问题"><a href="#redis服务自启动问题" class="headerlink" title="redis服务自启动问题"></a>redis服务自启动问题</h4><p>关闭Ubuntu窗口后下次再打开，redis-cli连不上redis服务器：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ redis-cli</span><br><span class="line">Could not connect to Redis at 127.0.0.1:6379: Connection refused</span><br><span class="line">not connected&gt;</span><br></pre></td></tr></table></figure><p>解决方法：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ sudo service redis-server start</span><br><span class="line">[sudo] password for yan:</span><br><span class="line">Starting redis-server: redis-server.</span><br><span class="line">yan@yan:~$</span><br></pre></td></tr></table></figure><p>再次测试：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xc@LAPTOP-3CVGIE0Q:~$ redis-cli</span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line">127.0.0.1:6379&gt; set hello xc </span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get hello</span><br><span class="line">"xc"</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
